@@ -1,3 +1,10 @@
 {
-  "data": []
+  "transaction": [
+    {
+      "id": "1",
+      "category": "expense",
+      "transaction_name": "Makan Siang",
+      "value": 10000
+    }
+  ]
 }

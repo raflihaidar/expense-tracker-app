@@ -7,7 +7,11 @@ import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 
 const store = useTransactionStore()
-const { expends, income, balance, transactionList } = storeToRefs(store)
+const { expense, income, balance, transactionList } = storeToRefs(store)
+
+const deleteTransaction = (item: any): void => {
+  store.deleteData(item)
+}
 
 onMounted(async () => {
   store.getData()
@@ -16,18 +20,18 @@ onMounted(async () => {
 
 <template>
   <main class="my-10 lg:w-[40%] w-full p-5  mx-auto">
-    <p class="text-center font-bold text-xl tracking-wide">Expense Tracker By Rafli Haidar Nashif</p>
+    <p class="text-center font-bold text-xl tracking-wide">Expense Tracker</p>
     <section class="flex flex-col items-center gap-y-3 my-5">
-      <TheCard title="Your Balance" :data="balance" />
+      <TheCard title="total balance" :data="balance" />
       <div class="flex justify-center gap-x-10 w-[60%] mx-auto">
         <TheCard title="Income" :data="income" />
-        <TheCard title="Expense" :data="expends" />
+        <TheCard title="Expense" :data="expense" />
       </div>
     </section>
     <section>
-      <HistoryTransaction :data="transactionList" />
+      <HistoryTransaction :data="transactionList" v-on:delete="deleteTransaction" />
     </section>
-    <section class="my-5">
+    <section class=" my-5">
       <BaseForm />
     </section>
   </main>
