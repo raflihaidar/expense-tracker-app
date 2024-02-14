@@ -6,7 +6,10 @@ const props = defineProps({
     type: String,
     required: true
   },
-  text_size: String,
+  text_size: {
+    type: String,
+    default: 'text-2xl'
+  },
   text_color: {
     type: String,
     default: "black",
@@ -15,6 +18,10 @@ const props = defineProps({
     type: Number,
     require: true,
     default: 0
+  },
+  bgColor: {
+    type: Boolean,
+    default: false
   },
   color: String
 })
@@ -25,8 +32,8 @@ const { data } = toRefs(props)
 
 
 <template>
-  <div class="text-center font-semibold">
-    <p class="'text-xs uppercase'">{{ props.title }}</p>
-    <p :class="'text-2xl font-bold'">Rp {{ data }}</p>
+  <div :class="bgColor ? 'bg-white shadow-md' : ''" class="text-center font-bold p-5 w-full">
+    <p class='text-xs uppercase'>{{ title }}</p>
+    <p :class="'font-bold ' + text_size + ' ' + text_color">Rp {{ data }}</p>
   </div>
 </template>

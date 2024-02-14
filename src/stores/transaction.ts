@@ -32,42 +32,46 @@ export const useTransactionStore = defineStore('transaction', () => {
 
       await axios.post("http://localhost:3000/transaction", {
         id,
-        category: data.category,
+        type: data.type,
         transaction_name: data.transaction_name,
-        value: data.value
+        amount: data.amount,
+        date: data.date
       })
 
       transactionList.value.push({
-        id: JSON.stringify(id),
-        category: data.category,
+        id,
+        type: data.type,
         transaction_name: data.transaction_name,
-        value: data.value
+        amount: data.amount,
+        date: data.date
       })
 
-      if (data.category === 'income') {
-        income.value += data.value
-        balance.value += data.value;
+      if (data.type === 'income') {
+        income.value += data.amount
+        balance.value += data.amount;
       } else {
-        expense.value += data.value
-        balance.value -= data.value;
+        expense.value += data.amount
+        balance.value -= data.amount;
       }
     } catch (error) {
       console.log(error)
     }
   }
 
-  const deleteData = async (data: any): Promise<void> => {
+  const deleteData = async (data: any, index: number): Promise<void> => {
     try {
       const id = JSON.parse(data.id)
       await axios.delete(`http://localhost:3000/transaction/${id}`)
-      transactionList.value.splice(id - 1, 1)
+      transactionList.value.splice(index, 1)
+      console.log(id)
+      console.log(transactionList.value)
 
-      if (data.category === 'income') {
-        income.value -= data.value
-        balance.value -= data.value
+      if (data.type === 'income') {
+        income.value -= data.amount
+        balance.value -= data.amount
       } else {
-        expense.value -= data.value
-        balance.value += data.value
+        expense.value -= data.amount
+        balance.value += data.amount
       }
     } catch (error) {
       console.log(error)

@@ -2,46 +2,69 @@
 import { useTransactionStore } from '@/stores/transaction';
 import { reactive } from 'vue';
 
+const typeTransaction: any = reactive([
+  {
+    name: 'income',
+    isClicked: true
+  },
+  {
+    name: 'expense',
+    isClicked: false
+  }
+])
+
 const store = useTransactionStore()
 
 const payload: any = reactive({
-  category: "",
-  transaction_name: "",
-  value: 0
+  type: "income",
+  transaction_name: null,
+  amount: null,
+  date: null
 })
 
 const addTransaction = async () => {
-  console.log(payload)
   await store.addNewData(payload).then(() => {
     payload.category = "";
     payload.transaction_name = "";
-    payload.value = 0;
+    payload.amount = null;
+    payload.date = null
   })
 }
+
+const clickedTypeButton = (item: any) => {
+  typeTransaction.map((value: any) => value.name != item.name ? value.isClicked = false : value.isClicked = true)
+  payload.type = item.name
+}
+
 </script>
 
 <template>
-  <div class="text-center w-[60%] mx-auto">
-    <p class="border-b border-black">Add New Transaction</p>
+  <div>
+    <p class="border-b-2 border-gray-300 pb-1 font-bold">Add New Transaction</p>
     <form @submit.prevent="addTransaction">
-      <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start">
-        <label for="description">Category</label>
-        <select name="category" id="dropdown-categrory" class="outline-none px-3 py-2 border border-gray-200"
-          v-model="payload.category">
-          <option value="income">income</option>
-          <option value="expense">expense</option>
-        </select>
+      <div class="flex bg-gray-300 gap-x-2 p-1 rounded-md text-center">
+        <span :class="item.isClicked ? 'bg-white rounded-md shadow-md' : ''" v-for="(item, index) in typeTransaction"
+          :key="index" @click="clickedTypeButton(item)" class="w-1/2 font-bold text-md p-1 cursor-pointer">
+          {{ item.name }}
+        </span>
       </div>
       <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start">
         <label for="description">Description</label>
-        <input type="text" name="description" id="desc-input" placeholder="Detail of Transaction"
-          class="outline-none px-3 py-2 border border-gray-200" v-model="payload.transaction_name">
+        <input type="text" name="description" id="desc-input" placeholder="Detail of Transaction" autocomplete="off"
+          required class="outline-none px-3 py-2 border border-gray-200" v-model="payload.transaction_name">
       </div>
-      <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start">
-        <label for="transaction">Transaction</label>
-        <input type="number" name="transaction" id="transaction-input" placeholder="Value of Transaction"
-          class="outline-none px-3 py-2 border border-gray-200" v-model="payload.value">
-      </div>
+      <section class="flex justify-between items-center gap-x-2">
+        <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start w-1/2">
+          <label for="transaction">Amount</label>
+          <input type="number" name="amount" id="amount-input" placeholder="Value of amount" autocomplete="off" required
+            class="outline-none px-3 py-2 border border-gray-200" v-model="payload.amount">
+        </div>
+        <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start w-1/2">
+          <label for="transaction">Date</label>
+          <input type="date" name="date" id="date-input" placeholder="Value of date" autocomplete="off" required
+            class="outline-none px-3 py-2 border border-gray-200" v-model="payload.date">
+        </div>
+      </section>
       <button class="w-full bg-sky-800 py-2 px-2 text-white font-semibold" type="submit">
         Add New Transaction
       </button>
