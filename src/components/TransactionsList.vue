@@ -19,7 +19,6 @@ const { data } = toRefs(props);
 
 const deleteTransaction = (item: any, index: number): void => {
   hoverIndex.value = -1
-  alert("delete success")
   store.deleteData(item, index)
 };
 
@@ -29,9 +28,9 @@ const handleHover = (index: number, isHover: boolean) => {
 </script>
 
 <template>
-  <div class="font-bold">
+  <div class="font-bold w-full h-[50%]">
     <p class="border-b-2 border-gray-300 pb-1">Transactions</p>
-    <div class="w-full">
+    <div class="w-full max-h-48 overflow-y-auto overflow-x-hidden">
       <template v-if="data.length">
         <div
           class="flex w-full justify-between items-center my-3 bg-white shadow-md py-2 px-3 rounded-md relative cursor-pointer"

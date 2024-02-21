@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from 'vue'
+import { showAlert } from "@/components/TheInfoAlert";
+import Swal from "sweetalert2";
 import axios from "axios"
 
 export const useTransactionStore = defineStore('transaction', () => {
@@ -62,10 +64,10 @@ export const useTransactionStore = defineStore('transaction', () => {
     try {
       const id = JSON.parse(data.id)
       await axios.delete(`http://localhost:3000/transaction/${id}`)
+      showAlert("Delete Success")
       transactionList.value.splice(index, 1)
       console.log(id)
       console.log(transactionList.value)
-
       if (data.type === 'income') {
         income.value -= data.amount
         balance.value -= data.amount

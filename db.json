@@ -1,3 +1,32 @@
 {
-  "transaction": []
+  "transaction": [
+    {
+      "id": "1",
+      "type": "income",
+      "transaction_name": "Freelance",
+      "amount": 2000000,
+      "date": "2024-02-20"
+    },
+    {
+      "id": "2",
+      "type": "expense",
+      "transaction_name": "makan siang",
+      "amount": 300000,
+      "date": "2024-02-20"
+    },
+    {
+      "id": "3",
+      "type": "expense",
+      "transaction_name": "makan malam",
+      "amount": 400000,
+      "date": "2024-02-20"
+    },
+    {
+      "id": "4",
+      "type": "income",
+      "transaction_name": "Jualan",
+      "amount": 5900000,
+      "date": "2024-02-21"
+    }
+  ]
 }

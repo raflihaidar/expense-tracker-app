@@ -30,7 +30,7 @@ onMounted(async () => {
           <TheCard title="Expense" :data="expense" text_size="text-md" text_color="text-red-500" :bgColor="true" />
         </div>
       </section>
-      <section class="w-[80%] mx-auto">
+      <section class="w-[80%] h-full mx-auto">
         <TransactionList :data="transactionList" />
       </section>
       <section class=" w-[80%] mx-auto my-5">
