@@ -1,32 +1,50 @@
 {
-  "transaction": [
+  "transactions": [],
+  "types": [
     {
       "id": "1",
-      "type": "income",
-      "transaction_name": "Freelance",
-      "amount": 2000000,
-      "date": "2024-02-20"
+      "name": "income"
     },
     {
       "id": "2",
-      "type": "expense",
-      "transaction_name": "makan siang",
-      "amount": 300000,
-      "date": "2024-02-20"
+      "name": "expense"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Main",
+      "typeId": "1"
+    },
+    {
+      "id": "2",
+      "name": "Passive",
+      "typeId": "1"
     },
     {
       "id": "3",
-      "type": "expense",
-      "transaction_name": "makan malam",
-      "amount": 400000,
-      "date": "2024-02-20"
+      "name": "Invesment",
+      "typeId": "1"
     },
     {
       "id": "4",
-      "type": "income",
-      "transaction_name": "Jualan",
-      "amount": 5900000,
-      "date": "2024-02-21"
+      "name": "Gift",
+      "typeId": "1"
+    },
+    {
+      "id": "5",
+      "name": "Needs",
+      "typeId": "2"
+    },
+    {
+      "id": "6",
+      "name": "Desire",
+      "typeId": "2"
+    },
+    {
+      "id": "7",
+      "name": "Savings",
+      "typeId": "2"
     }
   ]
 }

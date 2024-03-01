@@ -1,7 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref } from 'vue'
 import { showAlert } from "@/components/TheInfoAlert";
-import Swal from "sweetalert2";
 import axios from "axios"
 
 export const useTransactionStore = defineStore('transaction', () => {
@@ -21,7 +20,7 @@ export const useTransactionStore = defineStore('transaction', () => {
 
   const getData = async (): Promise<void> => {
     try {
-      const respose = await axios.get("http://localhost:3000/transaction")
+      const respose = await axios.get("http://localhost:3000/transactions")
       transactionList.value = respose.data
     } catch (error) {
       console.log(error)
@@ -32,7 +31,7 @@ export const useTransactionStore = defineStore('transaction', () => {
     try {
       const id = JSON.stringify(lastTransactionId.value + 1)
 
-      await axios.post("http://localhost:3000/transaction", {
+      await axios.post("http://localhost:3000/transactions", {
         id,
         type: data.type,
         transaction_name: data.transaction_name,
@@ -63,7 +62,7 @@ export const useTransactionStore = defineStore('transaction', () => {
   const deleteData = async (data: any, index: number): Promise<void> => {
     try {
       const id = JSON.parse(data.id)
-      await axios.delete(`http://localhost:3000/transaction/${id}`)
+      await axios.delete(`http://localhost:3000/transactions/${id}`)
       showAlert("Delete Success")
       transactionList.value.splice(index, 1)
       console.log(id)

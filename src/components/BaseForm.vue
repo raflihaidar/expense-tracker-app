@@ -48,11 +48,27 @@ const clickedTypeButton = (item: any) => {
           {{ item.name }}
         </span>
       </div>
-      <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start">
-        <label for="description">Description</label>
-        <input type="text" name="description" id="desc-input" placeholder="Detail of Transaction" autocomplete="off"
-          required class="outline-none px-3 py-2 border border-gray-200" v-model="payload.transaction_name">
-      </div>
+      <section class="flex justify-between items-center gap-x-2">
+        <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start w-[70%]">
+          <label for="description">Description</label>
+          <input type="text" name="description" id="desc-input" placeholder="Detail of Transaction" autocomplete="off"
+            required class="outline-none px-3 py-2 border border-gray-200" v-model="payload.transaction_name">
+        </div>
+        <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start w-[30%]">
+          <label for="description">Category</label>
+          <select class="outline-none px-3 py-2 border border-gray-200" v-if="payload.type === 'expense'">
+            <option value="Needs">Needs</option>
+            <option value="Desire">Desire</option>
+            <option value="Savings">Savings</option>
+          </select>
+          <select class="outline-none px-3 py-2 border border-gray-200" v-else>
+            <option value="Needs">Main</option>
+            <option value="Needs">Passive</option>
+            <option value="Needs">Investment</option>
+            <option value="Needs">Gift</option>
+          </select>
+        </div>
+      </section>
       <section class="flex justify-between items-center gap-x-2">
         <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start w-1/2">
           <label for="transaction">Amount</label>

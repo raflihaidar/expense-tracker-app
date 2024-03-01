@@ -34,6 +34,6 @@ const { data } = toRefs(props)
 <template>
   <div :class="bgColor ? 'bg-white shadow-md' : ''" class="text-center font-bold p-5 w-full">
     <p class='text-xs uppercase'>{{ title }}</p>
-    <p :class="'font-bold ' + text_size + ' ' + text_color">Rp {{ data }}</p>
+    <p :class="'font-bold ' + text_size + ' ' + text_color">Rp {{ data.toLocaleString('id-ID') }}</p>
   </div>
 </template>

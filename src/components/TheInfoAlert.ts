@@ -13,7 +13,7 @@ export const showAlert = (message: String): void => {
     }
   });
   InfoAlert.fire({
-    icon: "info",
+    icon: "success",
     title: message
   });
 }
