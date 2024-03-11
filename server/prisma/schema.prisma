@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String        @id @default(uuid())
+  fullname    String        @unique @db.VarChar(100)
+  username    String        @unique @db.VarChar(20)
+  password    String        @db.VarChar(50)
+  email       String?       @unique @db.VarChar(100)
+  report_id   String        @unique
+  report      Report        @relation(fields: [report_id], references: [id])
+  transaction Transaction[]
+
+  @@map("users")
+}
+
+model Report {
+  id        String   @id @default(uuid())
+  income    Int      @db.Int
+  expense   Int      @db.Int
+  balance   Int      @db.Int
+  updatedAt DateTime @default(now())
+  user      User?
+
+  @@map("reports")
+}
+
+model Transaction {
+  id          String   @id @default(uuid())
+  description String   @db.VarChar(100)
+  amount      Int      @db.Int
+  createdAt   DateTime @db.Date
+  type_id     Int      @db.Int
+  user_id     String   @db.VarChar(255)
+  user        User     @relation(fields: [user_id], references: [id])
+  type        Type     @relation(fields: [type_id], references: [id])
+
+  @@map("transactions")
+}
+
+model Type {
+  id          Int           @id @default(autoincrement()) @db.Int
+  name        String        @db.VarChar(20)
+  Transaction Transaction[]
+  Category    Category[]
+
+  @@map("types")
+}
+
+model Category {
+  id      Int    @id @default(autoincrement())
+  name    String @db.VarChar(20)
+  total   Int    @db.Int
+  type_id Int    @db.Int
+  type    Type   @relation(fields: [type_id], references: [id])
+
+  @@map("categories")
+}

@@ -13,9 +13,10 @@
     "format": "prettier --write src/",
     "test": "vitest",
     "tests": "node test/api/server.test.js",
-    "server": "node server/server.js"
+    "server": "ts-node-esm server/server.ts"
   },
   "dependencies": {
+    "@types/express": "^4.17.21",
     "@vue/test-utils": "^2.4.4",
     "axios": "^1.6.7",
     "chart.js": "^4.4.2",
