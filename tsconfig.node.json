@@ -7,10 +7,6 @@
     "nightwatch.conf.*",
     "playwright.config.*"
   ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  },
   "compilerOptions": {
     "composite": true,
     "noEmit": true,

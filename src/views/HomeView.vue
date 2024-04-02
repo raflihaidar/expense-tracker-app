@@ -7,6 +7,7 @@ import TheChart from '@/components/TheChart.vue';
 import BaseForm from '@/components/BaseForm.vue';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
+import BaseNavbarVue from '@/components/BaseNavbar.vue';
 
 const transactionStore = useTransactionStore()
 const categoriesStore = useCategoeriesStore()
@@ -19,6 +20,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <BaseNavbarVue />
   <main class="w-full h-full p-1 bg-zinc-200">
     <p class="my-5 text-center font-bold text-xl tracking-wide">Expense Tracker</p>
     <div class="flex w-full justify-center items-center gap-x-10">

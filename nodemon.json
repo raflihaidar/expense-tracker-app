@@ -1,0 +1,10 @@
+{
+  "watch": [
+    "server"
+  ],
+  "ext": "ts,json",
+  "ignore": [
+    "src/**/*.spec.ts"
+  ],
+  "exec": "vite-node ./server/server.ts"
+}

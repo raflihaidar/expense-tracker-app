@@ -1,10 +1,9 @@
 import { Request, Response } from "express";
-import { prisma } from "../models/index.js";
+import { prisma } from "../models/index";
 
-export const getData = (req : Response, req : Request) => {
-  res.send("Hello OL")
+export const getData = (req : Request, res : Response) => {
+  res.send("Hello Transaction Controller")
 }
 
-export const addTransaction = (req : Request, res : Response ) => {
-  res.send("Hello OL")
+export const addData = (req : Request, res : Response) => {
 }
