@@ -1,3 +1,3 @@
 <template>
-  <p>Hello Sign Up</p>
+  <p class="text-red-500">Hello Sign Up</p>
 </template>

@@ -17,8 +17,8 @@ model User {
   id          String        @id @default(uuid())
   fullname    String        @unique @db.VarChar(100)
   username    String        @unique @db.VarChar(20)
-  password    String        @db.VarChar(50)
-  email       String?       @unique @db.VarChar(100)
+  password    String        @db.VarChar(100)
+  email       String       @unique @db.VarChar(100)
   report_id   String        @unique
   report      Report        @relation(fields: [report_id], references: [id])
   transaction Transaction[]

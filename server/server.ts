@@ -1,16 +1,18 @@
-import express from 'express'
-import {router} from './routes/index'
-import { Request, Response } from "express";
+import express from 'express';
+import { router } from './routes/index';
+import { Request, Response } from 'express';
+import cors from 'cors';
 
-const app = express()
-const port = 3000
-app.use(express.json())
-app.use(router)
+const app = express();
+const port = 3000;
+app.use(express.json());
+app.use(router);
+app.use(cors({ origin: true, credentials: true }));
 
-app.get("/", (req : Request, res : Response) => {
-  res.send("Hello bang")
-})
+app.get('/', (req: Request, res: Response) => {
+  res.send('Hello bang');
+});
 
 app.listen(port, () => {
-  console.log(`Server is running in ${port}`)
-})
+  console.log(`Server is running in ${port}`);
+});
