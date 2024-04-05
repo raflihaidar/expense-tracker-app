@@ -4,13 +4,13 @@
   >
     <aside class="w-1/2 h-full bg-slate-100 shadow-2xl rounded-lg p-5">
       <h1 class="text-3xl font-bold mb-5">Sign in.</h1>
-      <form @submit.prevent="store.login()">
+      <form @submit.prevent="store.login(email, password)" method="post">
         <section class="flex flex-col gap-y-1 mb-5">
           <label for="email">e-mail</label>
           <input
             type="text"
             id="email"
-            v-model="payload.email"
+            v-model="email"
             class="bg-inherit border border-black outline-none py-1 px-3 rounded-md"
           />
         </section>
@@ -19,7 +19,7 @@
           <input
             type="password"
             id="password"
-            v-model="payload.password"
+            v-model="password"
             placeholder=""
             class="bg-inherit border border-black outline-none py-1 px-3 rounded-md"
           />
@@ -67,8 +67,6 @@
 import { ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 const store = useUserStore();
-const payload = ref({
-  email: null,
-  password: null
-});
+const email = ref(null);
+const password = ref(null);
 </script>

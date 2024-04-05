@@ -1,17 +1,26 @@
-import express from 'express';
+import express, { Application } from 'express';
+import * as dotenv from 'dotenv';
 import { router } from './routes/index';
-import { Request, Response } from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 
-const app = express();
-const port = 3000;
-app.use(express.json());
-app.use(router);
-app.use(cors({ origin: true, credentials: true }));
+dotenv.config();
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello bang');
-});
+const app: Application = express();
+const port = process.env.PORT;
+
+app.use(
+  cors({
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 200
+  })
+);
+
+app.use(express.json());
+app.use(bodyParser.json());
+app.use('/api', router);
 
 app.listen(port, () => {
   console.log(`Server is running in ${port}`);
