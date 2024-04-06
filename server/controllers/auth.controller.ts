@@ -1,26 +1,21 @@
 import { Request, Response } from 'express';
 import { prisma } from '../models/index';
 import { signAccessToken, verifyAccessToken } from '../utils/jwt';
+import userService from '../services/user.service';
+import { AuthDto } from '../dto/auth.dto';
+import { CreateUserDto } from '../dto/user.dto';
 import bcrypt from 'bcrypt';
 
 export const create = async (req: Request, res: Response) => {
-  const { fullname, username, password, email } = req.body;
-  const hashPassword = await bcrypt.hash(password, 10);
-  const user = await prisma.user.create({
-    data: {
-      fullname,
-      username,
-      password: hashPassword,
-      email,
-      report: {
-        create: {
-          income: 0,
-          expense: 0,
-          balance: 0
-        }
-      }
-    }
-  });
+  const { fullname, username, unHasPassword, email } = req.body;
+  const password = await bcrypt.hash(unHasPassword, 10);
+  const createUserDto: CreateUserDto = {
+    fullname,
+    username,
+    password,
+    email
+  };
+  const user = await userService.createUser(createUserDto);
 
   res.status(200).json({
     message: 'Register Success',
@@ -29,12 +24,8 @@ export const create = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = await prisma.user.findUnique({
-    where: {
-      email
-    }
-  });
+  const { email, password } = req.body as AuthDto;
+  const user = await userService.getUserByEmail(email);
 
   if (!user) return res.status(404).json({ message: "User Doesn't exist" });
 

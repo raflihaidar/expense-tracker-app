@@ -41,9 +41,12 @@
     </aside>
     <aside class="w-[40%] mx-auto p-7">
       <p class="text-3xl font-bold mb-3">Dont have and account yet?</p>
-      <button class="w-full mb-10 border-2 border-blue-500 text-blue rounded-md py-[0.1rem]">
+      <RouterLink
+        to="/sign-up"
+        class="w-full block text-center font-bold mb-10 border-2 border-blue-500 text-blue rounded-md py-[0.1rem]"
+      >
         Sign up
-      </button>
+      </RouterLink>
       <div>
         <p class="text-xs mb-3">Or sign up using your existing social media account</p>
         <button
@@ -65,8 +68,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useUserStore } from '@/stores/user';
-const store = useUserStore();
+import { useAuthStore } from '@/stores/auth.store';
+const store = useAuthStore();
 const email = ref(null);
 const password = ref(null);
 </script>
