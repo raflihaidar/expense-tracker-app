@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import router from '../router/index';
 import { showAlert } from '@/components/TheInfoAlert';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { ref } from 'vue';
 
 interface User {
@@ -15,25 +15,22 @@ export const useAuthStore = defineStore(
   'authentication',
   () => {
     const BASEURL = 'http://localhost:9000/api/auth';
-    const user: any = ref([]);
+    const user: any = ref({});
 
     const register = async (payload: User, confirmPassword: string) => {
       try {
         if (confirmPassword === payload.password) {
-          const response = await axios.post(`${BASEURL}/register`, {
-            fullname: payload.fullname,
-            username: payload.username,
-            email: payload.email,
-            unHasPassword: payload.password
-          });
+          const response = await axios.post(`${BASEURL}/register`, payload);
+
+          user.value = response.data.user;
 
           showAlert('Register Success');
           router.push({ name: 'home' });
-        } else {
-          alert('Register Error');
         }
-      } catch (error) {
-        console.log(error);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          return err.response?.data?.message;
+        }
       }
     };
 
@@ -43,14 +40,18 @@ export const useAuthStore = defineStore(
           email,
           password
         });
+        user.value = response.data.user;
         showAlert('Login Success');
         router.push({ name: 'home' });
-      } catch (error) {
-        console.log('error', error);
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          return err.response?.data?.message;
+        }
       }
     };
 
     return {
+      user,
       login,
       register
     };

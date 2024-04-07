@@ -4,13 +4,17 @@
   >
     <aside class="w-1/2 h-full bg-slate-100 shadow-2xl rounded-lg p-5">
       <h1 class="text-3xl font-bold mb-5">Sign in.</h1>
-      <form @submit.prevent="store.login(email, password)" method="post">
+      <div v-if="error" class="w-full font-bold bg-red-400 px-4 py-1 rounded-md text-sm">
+        <p>{{ error }}</p>
+      </div>
+      <form @submit.prevent="handleLogin(email, password)" method="post">
         <section class="flex flex-col gap-y-1 mb-5">
           <label for="email">e-mail</label>
           <input
             type="text"
             id="email"
             v-model="email"
+            required
             class="bg-inherit border border-black outline-none py-1 px-3 rounded-md"
           />
         </section>
@@ -21,6 +25,7 @@
             id="password"
             v-model="password"
             placeholder=""
+            required
             class="bg-inherit border border-black outline-none py-1 px-3 rounded-md"
           />
           <p class="text-xs">Forgot your password ?<RouterLink to="">click here</RouterLink></p>
@@ -66,10 +71,16 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth.store';
 const store = useAuthStore();
-const email = ref(null);
-const password = ref(null);
+const email = ref('');
+const password = ref('');
+const error: any = ref('');
+
+const handleLogin = async (email: string, password: string) => {
+  error.value = await store.login(email, password);
+  console.log(error.value);
+};
 </script>

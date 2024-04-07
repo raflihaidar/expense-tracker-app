@@ -112,20 +112,16 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth.store';
+import type User from '@/interfaces/user.interface';
 import { ref, watchEffect, watch } from 'vue';
 
 const store = useAuthStore();
-
+const error = ref('');
 const fName = ref('');
 const lName = ref('');
 const confirmPassword = ref('');
 
-const payload = ref<{
-  fullname: string;
-  username: string;
-  email: string;
-  password: string;
-}>({
+const payload = ref<User>({
   fullname: '',
   username: '',
   email: '',
