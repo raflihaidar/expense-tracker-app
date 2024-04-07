@@ -20,10 +20,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BaseNavbarVue />
   <main class="w-full h-full p-1 bg-zinc-200">
-    <p class="my-5 text-center font-bold text-xl tracking-wide">Expense Tracker</p>
-    <div class="flex w-full justify-center items-center gap-x-10">
+    <div class="flex my-5 w-full justify-center items-center gap-x-10">
       <TheChart name="income" class="order-1" />
       <TheChart name="expense" class="order-3" />
       <div
