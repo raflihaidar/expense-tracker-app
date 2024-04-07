@@ -7,8 +7,8 @@ import { CreateUserDto } from '../dto/user.dto';
 import bcrypt from 'bcrypt';
 
 export const create = async (req: Request, res: Response) => {
-  const { fullname, username, unHasPassword, email } = req.body;
-  const password = await bcrypt.hash(unHasPassword, 10);
+  let { fullname, username, password, email } = req.body;
+  password = await bcrypt.hash(password, 10);
   const createUserDto: CreateUserDto = {
     fullname,
     username,
@@ -32,7 +32,6 @@ export const login = async (req: Request, res: Response) => {
   if (!user.password) return res.status(404).json({ message: 'password not set' });
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  console.log(password);
 
   if (isPasswordValid) {
     const payload = {
@@ -40,7 +39,6 @@ export const login = async (req: Request, res: Response) => {
       password: user?.password
     };
     const token = await signAccessToken(payload);
-    console.log(token);
     return res.status(200).json({
       message: 'Login Success',
       user,
