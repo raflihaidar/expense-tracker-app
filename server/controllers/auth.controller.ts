@@ -7,20 +7,18 @@ import { CreateUserDto } from '../dto/user.dto';
 import bcrypt from 'bcrypt';
 
 export const create = async (req: Request, res: Response) => {
-  let { fullname, username, password, email } = req.body;
-  password = await bcrypt.hash(password, 10);
-  const createUserDto: CreateUserDto = {
-    fullname,
-    username,
-    password,
-    email
-  };
-  const user = await userService.createUser(createUserDto);
+  try {
+    let createUserDto: CreateUserDto = req.body;
+    createUserDto.password = await bcrypt.hash(createUserDto.password, 10);
+    const user = await userService.createUser(createUserDto);
 
-  res.status(200).json({
-    message: 'Register Success',
-    user
-  });
+    res.status(200).json({
+      message: 'Register Success',
+      user
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const login = async (req: Request, res: Response) => {
