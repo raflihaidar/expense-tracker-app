@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import * as dotenv from 'dotenv';
 import { router } from './routes/index';
 import bodyParser from 'body-parser';
+import 'reflect-metadata';
 import cors from 'cors';
 
 dotenv.config();

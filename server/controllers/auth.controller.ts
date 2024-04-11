@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { prisma } from '../models/index';
 import { signAccessToken, verifyAccessToken } from '../utils/jwt';
 import userService from '../services/user.service';
 import { AuthDto } from '../dto/auth.dto';
