@@ -1,5 +1,27 @@
 {
-  "transactions": [],
+  "transactions": [
+    {
+      "id": "1",
+      "type": "income",
+      "transaction_name": "freelance",
+      "amount": 30000,
+      "date": "2024-04-12"
+    },
+    {
+      "id": "2",
+      "type": "expense",
+      "transaction_name": "makan siang",
+      "amount": 500000,
+      "date": "2024-04-12"
+    },
+    {
+      "id": "3",
+      "type": "income",
+      "transaction_name": "dsasd",
+      "amount": 300000,
+      "date": "2024-04-12"
+    }
+  ],
   "types": [
     {
       "id": "1",

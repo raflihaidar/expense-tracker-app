@@ -7,7 +7,6 @@ import TheChart from '@/components/TheChart.vue';
 import BaseForm from '@/components/BaseForm.vue';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
-import BaseNavbarVue from '@/components/BaseNavbar.vue';
 
 const transactionStore = useTransactionStore();
 const categoriesStore = useCategoeriesStore();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, Ref } from 'vue';
+import { ref } from 'vue';
 import IconDelete from './icons/IconDelete.vue';
 import { useTransactionStore } from '@/stores/transaction.store';
 import { storeToRefs } from 'pinia';
