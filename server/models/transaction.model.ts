@@ -1,7 +1,22 @@
-import { Transaction, Prisma, Report, User } from '@prisma/client';
+import { Transaction, Prisma } from '@prisma/client';
 import { prisma } from '../common/db';
 
 class TransactionModel {
+  public async view(id: string): Promise<Transaction[] | null> {
+    return prisma.transaction.findMany({
+      where: {
+        user_id: id
+      },
+      include: {
+        user: {
+          include: {
+            report: true
+          }
+        }
+      }
+    });
+  }
+
   public async create(data: Prisma.TransactionCreateInput): Promise<Transaction | null> {
     return prisma.$transaction(async (tx) => {
       const transaction = tx.transaction.create({

@@ -42,7 +42,7 @@ export const useAuthStore = defineStore(
         });
         user.value = response.data.user;
         showAlert('Login Success');
-        router.push({ name: 'home' });
+        router.push({ name: 'home', params: { id: user.value.id } });
       } catch (err) {
         if (err instanceof AxiosError) {
           return err.response?.data?.message;

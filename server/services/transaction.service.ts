@@ -3,6 +3,10 @@ import TransactionModel from '../models/transaction.model';
 import { CreateTransactionDto } from '../dto/transaction.dto';
 
 class TransactionService {
+  public async getTransactionData(id: string): Promise<Transaction[] | null> {
+    return TransactionModel.view(id);
+  }
+
   public async createTransaction(
     createTransactionDto: CreateTransactionDto
   ): Promise<Transaction | null> {

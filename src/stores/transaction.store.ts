@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import { showAlert } from '@/components/TheInfoAlert';
 import axios from 'axios';
+import type { RouteParams } from 'vue-router';
 
 export const useTransactionStore = defineStore(
   'transaction',
@@ -9,7 +10,17 @@ export const useTransactionStore = defineStore(
     const balance = ref(0);
     const income = ref(0);
     const expense = ref(0);
+    const type = ref<any>({});
     const transactionList: any = ref([]);
+
+    const getTypeTransaction = async (): Promise<void> => {
+      try {
+        const response = await axios.get('http://localhost:9000/api/type/');
+        type.value = response.data.type;
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
     const lastTransactionId: any = computed(() => {
       if (transactionList.value.length) {
@@ -19,11 +30,10 @@ export const useTransactionStore = defineStore(
       }
     });
 
-    const getData = async (): Promise<void> => {
+    const getData = async (params: RouteParams): Promise<void> => {
       try {
-        const respose = await axios.get('http://localhost:3000/transactions');
-        transactionList.value = respose.data;
-        console.log(transactionList.value);
+        const respose = await axios.get(`http://localhost:9000/api/transaction/${params.id}`);
+        transactionList.value = respose.data.transaction;
       } catch (error) {
         console.log(error);
       }
@@ -31,31 +41,11 @@ export const useTransactionStore = defineStore(
 
     const addNewData = async (data: any): Promise<void> => {
       try {
-        const id = JSON.stringify(lastTransactionId.value + 1);
+        const response = await axios.post('http://localhost:9000/api/transaction/create', data);
 
-        await axios.post('http://localhost:3000/transactions', {
-          id,
-          type: data.type,
-          transaction_name: data.transaction_name,
-          amount: data.amount,
-          date: data.date
-        });
-
-        transactionList.value.push({
-          id,
-          type: data.type,
-          transaction_name: data.transaction_name,
-          amount: data.amount,
-          date: data.date
-        });
-
-        if (data.type === 'income') {
-          income.value += data.amount;
-          balance.value += data.amount;
-        } else {
-          expense.value += data.amount;
-          balance.value -= data.amount;
-        }
+        // transactionList.value.push(response.data);
+        console.log('data', data);
+        console.log('response : ', response.data);
       } catch (error) {
         console.log(error);
       }
@@ -88,6 +78,8 @@ export const useTransactionStore = defineStore(
       balance,
       income,
       expense,
+      type,
+      getTypeTransaction,
       addNewData,
       deleteData,
       getData

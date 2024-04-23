@@ -1,54 +1,55 @@
 <script setup lang="ts">
 import { useTransactionStore } from '@/stores/transaction.store';
-import { reactive } from 'vue';
-
-const typeTransaction: any = reactive([
-  {
-    name: 'income',
-    isClicked: true
-  },
-  {
-    name: 'expense',
-    isClicked: false
-  }
-]);
+import { useAuthStore } from '@/stores/auth.store';
+import { storeToRefs } from 'pinia';
+import { onMounted, reactive, ref } from 'vue';
 
 const store = useTransactionStore();
+const authStore = useAuthStore();
+const { type } = storeToRefs(store);
+
+const selectedTypeIndex = ref<number>(0);
 
 const payload: any = reactive({
-  type: 'income',
-  transaction_name: null,
+  user_id: authStore.user.id,
+  type_id: 1,
+  description: null,
   amount: null,
   date: null
 });
 
-const addTransaction = async () => {
+const selectType = (index: number) => {
+  selectedTypeIndex.value = index;
+  payload.type = type.value[index].id;
+};
+
+const addTransaction = async (payload: any) => {
   await store.addNewData(payload).then(() => {
+    payload.type = 1;
     payload.category = '';
-    payload.transaction_name = '';
+    payload.description = '';
     payload.amount = null;
     payload.date = null;
+
+    console.log('payload : ', payload);
   });
 };
 
-const clickedTypeButton = (item: any) => {
-  typeTransaction.map((value: any) =>
-    value.name != item.name ? (value.isClicked = false) : (value.isClicked = true)
-  );
-  payload.type = item.name;
-};
+onMounted(async () => {
+  await store.getTypeTransaction();
+});
 </script>
 
 <template>
   <div>
     <p class="border-b-2 border-gray-300 pb-1 font-bold">Add New Transaction</p>
-    <form @submit.prevent="addTransaction">
+    <form @submit.prevent="addTransaction(payload)">
       <div class="flex bg-gray-300 gap-x-2 p-1 rounded-md text-center">
         <span
-          :class="item.isClicked ? 'bg-white rounded-md shadow-md' : ''"
-          v-for="(item, index) in typeTransaction"
+          v-for="(item, index) in type"
+          :class="selectedTypeIndex === index ? 'bg-white rounded-md shadow-md' : ''"
           :key="index"
-          @click="clickedTypeButton(item)"
+          @click="selectType(index)"
           class="w-1/2 font-bold text-md p-1 cursor-pointer"
         >
           {{ item.name }}
@@ -65,7 +66,7 @@ const clickedTypeButton = (item: any) => {
             autocomplete="off"
             required
             class="outline-none px-3 py-2 border border-gray-200"
-            v-model="payload.transaction_name"
+            v-model="payload.description"
           />
         </div>
         <div class="grid grid-cols-1 my-3 gap-y-2 justify-start text-start w-[30%]">

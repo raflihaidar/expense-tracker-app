@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router';
 import { useTransactionStore } from '@/stores/transaction.store';
 import { useCategoeriesStore } from '@/stores/categories.store';
 import TheCard from '@/components/TheCard.vue';
@@ -8,12 +9,13 @@ import BaseForm from '@/components/BaseForm.vue';
 import { storeToRefs } from 'pinia';
 import { onMounted } from 'vue';
 
+const router = useRoute();
 const transactionStore = useTransactionStore();
 const categoriesStore = useCategoeriesStore();
 const { expense, income, balance, transactionList } = storeToRefs(transactionStore);
 
 onMounted(async () => {
-  await transactionStore.getData();
+  await transactionStore.getData(router.params);
   await categoriesStore.getCategories();
 });
 </script>

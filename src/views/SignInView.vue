@@ -47,7 +47,7 @@
     <aside class="w-[40%] mx-auto p-7">
       <p class="text-3xl font-bold mb-3">Dont have and account yet?</p>
       <RouterLink
-        to="/sign-up"
+        to="/sign-up/"
         class="w-full block text-center font-bold mb-10 border-2 border-blue-500 text-blue rounded-md py-[0.1rem]"
       >
         Sign up
@@ -74,7 +74,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/auth.store';
+import { storeToRefs } from 'pinia';
 const store = useAuthStore();
+const { user } = storeToRefs(store);
 const email = ref('');
 const password = ref('');
 const error: any = ref('');

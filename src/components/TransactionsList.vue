@@ -33,7 +33,7 @@ const handleHover = (index: number, isHover: boolean) => {
           >
             <div>
               <p>
-                {{ item.transaction_name }}
+                {{ item.description }}
               </p>
               <p class="font-normal text-xs">
                 {{ item.date }}
