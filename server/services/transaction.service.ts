@@ -10,12 +10,12 @@ class TransactionService {
   public async createTransaction(
     createTransactionDto: CreateTransactionDto
   ): Promise<Transaction | null> {
-    const { description, amount, type_id, user_id } = createTransactionDto;
+    const { description, amount, type_id, user_id, createdAt } = createTransactionDto;
 
     const createTransactionInput: Prisma.TransactionCreateInput = {
       description,
       amount,
-      createdAt: new Date(),
+      createdAt,
       user: { connect: { id: user_id } },
       type: { connect: { id: type_id } }
     };

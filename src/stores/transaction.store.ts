@@ -42,10 +42,7 @@ export const useTransactionStore = defineStore(
     const addNewData = async (data: any): Promise<void> => {
       try {
         const response = await axios.post('http://localhost:9000/api/transaction/create', data);
-
-        // transactionList.value.push(response.data);
-        console.log('data', data);
-        console.log('response : ', response.data);
+        transactionList.value.push(response.data.transaction);
       } catch (error) {
         console.log(error);
       }

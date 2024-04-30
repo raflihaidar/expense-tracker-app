@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsNumber, IsInt } from 'class-validator';
+import { IsString, MaxLength, IsNumber, IsInt, IsDateString } from 'class-validator';
 
 export class CreateTransactionDto {
   @IsString()
@@ -15,4 +15,7 @@ export class CreateTransactionDto {
 
   @IsString()
   user_id: string;
+
+  @IsDateString()
+  createdAt: Date;
 }

@@ -36,17 +36,17 @@ const handleHover = (index: number, isHover: boolean) => {
                 {{ item.description }}
               </p>
               <p class="font-normal text-xs">
-                {{ item.date }}
+                {{ item.createdAt }}
               </p>
             </div>
-            <p :class="item.type === 'income' ? 'text-green-500' : 'text-red-500'">
+            <p :class="item.type_id === 1 ? 'text-green-500' : 'text-red-500'">
               <span v-if="item.type === 'expense'"> - </span>
               <span v-else> + </span>
               Rp {{ item.amount.toLocaleString('id-ID') }}
             </p>
             <span
               class="absolute top-0 -right-1 w-2 h-full"
-              :class="item.type === 'income' ? 'bg-green-500' : 'bg-red-500'"
+              :class="item.type_id === 1 ? 'bg-green-500' : 'bg-red-500'"
             >
             </span>
             <button

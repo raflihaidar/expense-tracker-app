@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { CreateTransactionDto } from '../dto/transaction.dto';
 import transactionService from '../services/transaction.service';
 
@@ -16,7 +16,7 @@ export const view = async (req: Request, res: Response) => {
   }
 };
 
-export const create = async (req: Request, res: Response) => {
+export const create = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let createTransactionDto: CreateTransactionDto = req.body;
     const transaction = await transactionService.createTransaction(createTransactionDto);
@@ -28,4 +28,6 @@ export const create = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
   }
+
+  next();
 };

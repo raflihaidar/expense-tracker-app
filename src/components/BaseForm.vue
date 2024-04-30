@@ -15,23 +15,21 @@ const payload: any = reactive({
   type_id: 1,
   description: null,
   amount: null,
-  date: null
+  createdAt: null
 });
 
 const selectType = (index: number) => {
   selectedTypeIndex.value = index;
-  payload.type = type.value[index].id;
+  payload.type_id = type.value[index].id;
 };
 
 const addTransaction = async (payload: any) => {
   await store.addNewData(payload).then(() => {
-    payload.type = 1;
+    payload.type_id = 1;
     payload.category = '';
     payload.description = '';
     payload.amount = null;
-    payload.date = null;
-
-    console.log('payload : ', payload);
+    payload.createdAt = null;
   });
 };
 
@@ -111,7 +109,7 @@ onMounted(async () => {
             autocomplete="off"
             required
             class="outline-none px-3 py-2 border border-gray-200"
-            v-model="payload.date"
+            v-model="payload.createdAt"
           />
         </div>
       </section>
