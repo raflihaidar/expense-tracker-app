@@ -48,24 +48,22 @@ export const useTransactionStore = defineStore(
       }
     };
 
-    const deleteData = async (data: any, index: number): Promise<void> => {
+    const deleteData = async (data: any): Promise<void> => {
       try {
-        const id = JSON.parse(data.id);
-        await axios.delete(`http://localhost:3000/transactions/${id}`);
+        const { id } = data;
+        await axios.delete(`http://localhost:9000/api/transactions/destroy/${id}`);
         showAlert('Delete Success');
-        transactionList.value.splice(index, 1);
-        console.log(id);
+        // transactionList.value.splice(index, 1);
         console.log(transactionList.value);
-        if (data.type === 'income') {
-          income.value -= data.amount;
-          balance.value -= data.amount;
-        } else {
-          expense.value -= data.amount;
-          balance.value += data.amount;
-        }
+        // if (data.type === 'income') {
+        //   income.value -= data.amount;
+        //   balance.value -= data.amount;
+        // } else {
+        //   expense.value -= data.amount;
+        //   balance.value += data.amount;
+        // }
       } catch (error) {
         console.log(error);
-        console.log(data.id);
       }
     };
 

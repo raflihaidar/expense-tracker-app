@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 
 export const dateMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('before middleware');
   if (req.body.createdAt) {
     try {
       req.body.createdAt = new Date(req.body.createdAt).toISOString();
@@ -14,19 +13,21 @@ export const dateMiddleware = async (req: Request, res: Response, next: NextFunc
 };
 
 export const dateFilter = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('after middleware');
   const oldJson = res.json;
-  res.json = function (data) {
-    console.log(data);
-    if (data.transaction) {
-      data.transaction.forEach((value) => {
-        value.createdAt = value.createdAt.toISOString().substring(0, 10);
-        console.log(value.createdAt);
-      });
+  res.json = (data) => {
+    if (data && data.transaction) {
+      if (req.method === 'GET') {
+        data.transaction.forEach((value) => {
+          value.createdAt = value.createdAt.toISOString().substring(0, 10);
+          console.log(value.createdAt);
+        });
+      } else {
+        data.transaction.createdAt = data.transaction.createdAt.toISOString().substring(0, 10);
+      }
     }
     oldJson.call(res, data);
     return res;
   };
 
-  next(); // Penting untuk memanggil next() agar eksekusi melanjutkan ke middleware berikutnya
+  next();
 };

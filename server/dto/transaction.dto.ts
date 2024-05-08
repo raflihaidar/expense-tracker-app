@@ -1,4 +1,4 @@
-import { IsString, MaxLength, IsNumber, IsInt, IsDateString } from 'class-validator';
+import { IsString, MaxLength, IsNumber, IsInt, IsDateString, IsUUID } from 'class-validator';
 
 export class CreateTransactionDto {
   @IsString()
@@ -18,4 +18,9 @@ export class CreateTransactionDto {
 
   @IsDateString()
   createdAt: Date;
+}
+
+export class DestroyTransactionDto {
+  @IsUUID()
+  id: string;
 }

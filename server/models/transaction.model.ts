@@ -73,6 +73,14 @@ class TransactionModel {
       return transaction;
     });
   }
+
+  public async destroy(id: string): Promise<void> {
+    await prisma.transaction.delete({
+      where: {
+        id
+      }
+    });
+  }
 }
 
 export default new TransactionModel();
