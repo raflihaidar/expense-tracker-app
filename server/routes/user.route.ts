@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { view } from '../controllers/user.controller';
+import { UserController } from '../controllers/user.controller';
 
+const userController = new UserController();
 export const userRouter = Router();
 
-userRouter.get('/', view);
+userRouter.get('/', userController.view);

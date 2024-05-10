@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { view, create } from '../controllers/type.controller';
+import { TypeController } from '../controllers/type.controller';
 
+const typeController = new TypeController();
 export const typeRouter = Router();
 
-typeRouter.get('/', view);
-typeRouter.post('/create', create);
+typeRouter.get('/', typeController.view);
+typeRouter.post('/create', typeController.create);

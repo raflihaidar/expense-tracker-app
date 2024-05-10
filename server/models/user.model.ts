@@ -6,6 +6,9 @@ class UserModel {
     return await prisma.user.findFirst({
       where: {
         email
+      },
+      include: {
+        report: true
       }
     });
   }

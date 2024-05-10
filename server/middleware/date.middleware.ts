@@ -15,14 +15,16 @@ export const dateMiddleware = async (req: Request, res: Response, next: NextFunc
 export const dateFilter = async (req: Request, res: Response, next: NextFunction) => {
   const oldJson = res.json;
   res.json = (data) => {
-    if (data && data.transaction) {
+    if (data && data.data.transaction) {
       if (req.method === 'GET') {
-        data.transaction.forEach((value) => {
+        data.data.transaction.forEach((value) => {
           value.createdAt = value.createdAt.toISOString().substring(0, 10);
           console.log(value.createdAt);
         });
       } else {
-        data.transaction.createdAt = data.transaction.createdAt.toISOString().substring(0, 10);
+        data.data.transaction.createdAt = data.data.transaction.createdAt
+          .toISOString()
+          .substring(0, 10);
       }
     }
     oldJson.call(res, data);
