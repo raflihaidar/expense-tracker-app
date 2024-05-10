@@ -14,8 +14,8 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "types": [
-      "node"
-    ]
-  },
+    "experimentalDecorators": true,
+    "target": "esnext",
+    "types": ["node"]
+  }
 }
