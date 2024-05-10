@@ -1,28 +1,33 @@
 import TypeService from '../services/type.service';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import { successResponse } from '../common/response';
 
-export const create = async (req: Request, res: Response) => {
-  try {
-    const { name } = req.body;
-    const type = await TypeService.createType(name);
+export class TypeController {
+  public async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { name } = req.body;
+      const type = await TypeService.createType(name);
 
-    res.status(200).json({
-      message: 'Successfully added a new type',
-      type
-    });
-  } catch (error) {
-    console.log(error);
+      res.status(200).json({
+        message: 'Successfully added a new type',
+        type
+      });
+    } catch (error) {
+      res.status(error.statusCode).json(error.message);
+    }
+
+    next();
   }
-};
 
-export const view = async (req: Request, res: Response) => {
-  try {
-    const type = await TypeService.getType();
-    res.status(200).json({
-      message: 'Success',
-      type
-    });
-  } catch (error) {
-    console.log(error);
+  public async view(req: Request, res: Response, next: NextFunction) {
+    try {
+      const type = await TypeService.getType();
+
+      successResponse(res, type);
+    } catch (error) {
+      res.status(error.statusCode).json(error.message);
+    }
+
+    next();
   }
-};
+}

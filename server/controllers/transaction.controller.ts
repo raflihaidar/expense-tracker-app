@@ -1,50 +1,52 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateTransactionDto, DestroyTransactionDto } from '../dto/transaction.dto';
 import transactionService from '../services/transaction.service';
+import { successResponse, errorResponse } from '../common/response';
+import { RESPONSE_CODE } from '../common/code';
 
 interface IParam {
   id: string;
 }
 
-export const view = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const transaction = await transactionService.getTransactionData(id);
+export class TransactionController {
+  public async view(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const transaction = await transactionService.getTransactionData(id);
 
-    res.status(200).json({
-      message: 'get data transaction success',
-      transaction
-    });
-  } catch (error) {
-    console.log(error);
-  }
-};
+      successResponse(res, { transaction });
+    } catch (error: any) {
+      res.status(error.statusCode).json({ message: error.message });
+    }
 
-export const create = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    let createTransactionDto: CreateTransactionDto = req.body;
-    const transaction = await transactionService.createTransaction(createTransactionDto);
-
-    res.status(200).json({
-      message: 'Success adding new transaction',
-      transaction
-    });
-  } catch (error) {
-    console.log(error);
+    next();
   }
 
-  next();
-};
+  public async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      let createTransactionDto: CreateTransactionDto = req.body;
+      const transaction = await transactionService.createTransaction(createTransactionDto);
 
-export const destroy = async (req: Request<IParam>, res: Response, next: NextFunction) => {
-  try {
-    let destroyTransactionDto: DestroyTransactionDto = req.params;
-    await transactionService.destroyTransaction(destroyTransactionDto);
-
-    res.status(200).json({
-      message: 'Success Delete Transaction'
-    });
-  } catch (error) {
-    console.log(error);
+      if (!transaction) {
+        errorResponse(res, RESPONSE_CODE.BAD_REQUEST);
+      } else {
+        successResponse(res, { transaction, message: 'Success adding new transaction' });
+      }
+    } catch (error: any) {
+      console.log(error);
+      res.status(error.statusCode).json({ message: error.message });
+    }
   }
-};
+
+  public async destroy(req: Request<IParam>, res: Response, next: NextFunction) {
+    try {
+      let destroyTransactionDto: DestroyTransactionDto = req.params;
+      const report = await transactionService.destroyTransaction(destroyTransactionDto);
+
+      successResponse(res, report);
+    } catch (error: any) {
+      res.status(error.statusCode).json({ message: error.message });
+      console.log(error);
+    }
+  }
+}
