@@ -6,20 +6,13 @@ class TransactionModel {
     return prisma.transaction.findMany({
       where: {
         user_id: id
-      },
-      include: {
-        user: {
-          include: {
-            report: true
-          }
-        }
       }
     });
   }
 
   public async create(data: Prisma.TransactionCreateInput): Promise<Transaction | null> {
     return prisma.$transaction(async (tx) => {
-      const transaction = tx.transaction.create({
+      const transaction = await tx.transaction.create({
         data,
         include: {
           user: {
@@ -30,7 +23,7 @@ class TransactionModel {
         }
       });
 
-      const { type_id, user_id, amount } = await transaction;
+      const { type_id, user_id, amount } = transaction;
 
       if (type_id === 1) {
         await tx.user.update({
@@ -74,11 +67,62 @@ class TransactionModel {
     });
   }
 
-  public async destroy(id: string): Promise<void> {
-    await prisma.transaction.delete({
-      where: {
-        id
+  public async destroy(id: string): Promise<Transaction | null> {
+    return await prisma.$transaction(async (tx) => {
+      const transaction = await tx.transaction.delete({
+        where: {
+          id
+        },
+        include: {
+          user: {
+            include: {
+              report: true
+            }
+          }
+        }
+      });
+
+      const { type_id, user_id, amount } = transaction;
+
+      if (type_id === 1) {
+        await tx.user.update({
+          where: {
+            id: user_id
+          },
+          data: {
+            report: {
+              update: {
+                income: {
+                  decrement: amount
+                },
+                balance: {
+                  decrement: amount
+                }
+              }
+            }
+          }
+        });
+      } else {
+        await tx.user.update({
+          where: {
+            id: user_id
+          },
+          data: {
+            report: {
+              update: {
+                expense: {
+                  decrement: amount
+                },
+                balance: {
+                  increment: amount
+                }
+              }
+            }
+          }
+        });
       }
+
+      return transaction;
     });
   }
 }
