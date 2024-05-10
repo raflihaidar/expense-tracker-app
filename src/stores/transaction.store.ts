@@ -1,15 +1,13 @@
-import { defineStore } from 'pinia';
+import { defineStore, storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 import { showAlert } from '@/components/TheInfoAlert';
+import { useAuthStore } from './auth.store';
 import axios from 'axios';
 import type { RouteParams } from 'vue-router';
 
 export const useTransactionStore = defineStore(
   'transaction',
   () => {
-    const balance = ref(0);
-    const income = ref(0);
-    const expense = ref(0);
     const type = ref<any>({});
     const transactionList: any = ref([]);
 
@@ -33,7 +31,7 @@ export const useTransactionStore = defineStore(
     const getData = async (params: RouteParams): Promise<void> => {
       try {
         const respose = await axios.get(`http://localhost:9000/api/transaction/${params.id}`);
-        transactionList.value = respose.data.transaction;
+        transactionList.value = respose.data.data.transaction;
       } catch (error) {
         console.log(error);
       }
@@ -48,13 +46,14 @@ export const useTransactionStore = defineStore(
       }
     };
 
-    const deleteData = async (data: any): Promise<void> => {
+    const deleteData = async (id: string, index: number): Promise<void> => {
       try {
-        const { id } = data;
-        await axios.delete(`http://localhost:9000/api/transactions/destroy/${id}`);
+        const res = await axios.delete(`http://localhost:9000/api/transaction/destroy/${id}`);
         showAlert('Delete Success');
-        // transactionList.value.splice(index, 1);
-        console.log(transactionList.value);
+        const authStore = useAuthStore();
+        const { report } = storeToRefs(authStore);
+        transactionList.value.splice(index, 1);
+        report.value = res.data.data.user.report;
         // if (data.type === 'income') {
         //   income.value -= data.amount;
         //   balance.value -= data.amount;
@@ -70,9 +69,6 @@ export const useTransactionStore = defineStore(
     return {
       transactionList,
       lastTransactionId,
-      balance,
-      income,
-      expense,
       type,
       getTypeTransaction,
       addNewData,

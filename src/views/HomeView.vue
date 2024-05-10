@@ -2,6 +2,7 @@
 import { useRoute } from 'vue-router';
 import { useTransactionStore } from '@/stores/transaction.store';
 import { useCategoeriesStore } from '@/stores/categories.store';
+import { useAuthStore } from '@/stores/auth.store';
 import TheCard from '@/components/TheCard.vue';
 import TransactionList from '@/components/TransactionsList.vue';
 import TheChart from '@/components/TheChart.vue';
@@ -12,7 +13,9 @@ import { onMounted } from 'vue';
 const router = useRoute();
 const transactionStore = useTransactionStore();
 const categoriesStore = useCategoeriesStore();
-const { expense, income, balance, transactionList } = storeToRefs(transactionStore);
+const authStore = useAuthStore();
+const { transactionList } = storeToRefs(transactionStore);
+const { report } = storeToRefs(authStore);
 
 onMounted(async () => {
   await transactionStore.getData(router.params);
@@ -29,18 +32,18 @@ onMounted(async () => {
         class="order-2 mb-5 lg:w-[30%] p-1 shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)]"
       >
         <section class="flex flex-col items-center gap-y-3 my-5">
-          <TheCard title="total balance" :data="balance" />
+          <TheCard title="total balance" :data="report.balance" />
           <div class="flex justify-center w-[80%] mx-auto">
             <TheCard
               title="Income"
-              :data="income"
+              :data="report.income"
               text_size="text-md"
               text_color="text-green-500"
               :bgColor="true"
             />
             <TheCard
               title="Expense"
-              :data="expense"
+              :data="report.expense"
               text_size="text-md"
               text_color="text-red-500"
               :bgColor="true"

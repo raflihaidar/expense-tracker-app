@@ -16,13 +16,14 @@ export const useAuthStore = defineStore(
   () => {
     const BASEURL = 'http://localhost:9000/api/auth';
     const user: any = ref({});
+    const report = ref({});
 
     const register = async (payload: User, confirmPassword: string) => {
       try {
         if (confirmPassword === payload.password) {
           const response = await axios.post(`${BASEURL}/register`, payload);
 
-          user.value = response.data.user;
+          user.value = response.data.data.user;
 
           showAlert('Register Success');
           router.push({ name: 'home' });
@@ -40,8 +41,10 @@ export const useAuthStore = defineStore(
           email,
           password
         });
-        user.value = response.data.user;
+        user.value = response.data.data.user;
+        report.value = response.data.data.user.report;
         showAlert('Login Success');
+        console.log('user : ', user.value);
         router.push({ name: 'home', params: { id: user.value.id } });
       } catch (err) {
         if (err instanceof AxiosError) {
@@ -52,6 +55,7 @@ export const useAuthStore = defineStore(
 
     return {
       user,
+      report,
       login,
       register
     };

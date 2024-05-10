@@ -10,8 +10,8 @@ type hover = boolean | number | null;
 
 const hoverIndex: Ref<hover> = ref(false);
 
-const deleteTransaction = async (item: any, index: number): Promise<void> => {
-  await store.deleteData(item, index);
+const deleteTransaction = async (id: string, index: number): Promise<void> => {
+  await store.deleteData(id);
   hoverIndex.value = false;
 };
 
@@ -51,7 +51,7 @@ const handleHover = (index: number, isHover: boolean) => {
             </span>
             <button
               v-if="hoverIndex === index"
-              @click="deleteTransaction(item, index)"
+              @click="deleteTransaction(item.id, index)"
               class="absolute text-center flex justify-center items-center text-white top-0 right-0 z-10 w-28 h-full bg-red-500 opacity-85"
             >
               <IconDelete />
