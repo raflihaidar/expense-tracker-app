@@ -9,10 +9,14 @@ interface ResponseData {
 
 export const successResponse = (
   res: Response,
-  data: any,
+  data: any = '',
   codeValue: ResponseCodeValue = RESPONSE_CODE.SUCCESS
 ): void => {
-  const responseData: ResponseData = { code: codeValue.code, msg: codeValue.msg, data };
+  const responseData: ResponseData = {
+    code: codeValue.code,
+    msg: codeValue.msg ?? data.message,
+    data
+  };
   res.status(codeValue.code).json(responseData);
 };
 
